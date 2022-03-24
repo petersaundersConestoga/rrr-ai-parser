@@ -21,9 +21,14 @@ class TrumpParser extends React.Component {
     
     parseTweet(arr) {
         let prepMachineLearning = "";
+        // this is for the model so it know when a passage is complete
         let delimeter = "\n\n<|endoftext|>\n\n";
+
+        // tweets tend to have links, i do not want those
         let patternHttps = /https/i;
         let patternHttp = /http/i;
+
+        // tweets also tend to have @'s and I do not want them
         let patternAt = /@/i;
 
         let i = 0;
@@ -33,9 +38,9 @@ class TrumpParser extends React.Component {
         let testCount = 56571;
 
         arr.slice(0,testCount).map((item) => {
-            if (patternHttps.test(item.text) == false && 
-                patternHttp.test(item.text) == false && 
-                patternAt.test(item.text) == false) {
+            if (patternHttps.test(item.text) === false && 
+                patternHttp.test(item.text) === false && 
+                patternAt.test(item.text) === false) {
                 prepMachineLearning += item.text;
                 prepMachineLearning += delimeter;
                 i++;
@@ -44,14 +49,7 @@ class TrumpParser extends React.Component {
 
         this.setState({machineOut: prepMachineLearning, tweetCount: i});
     }
-    /*
-{this.state.myout.slice(0, 200).map((member) => ( 
-                    <>
-                    <p>{member.date} {member.id}</p>
-                    <div>{member.text}</div>
-                    </>
-                ))}
-                */
+
     render() {
         return (
             <div className="tweet-header">
