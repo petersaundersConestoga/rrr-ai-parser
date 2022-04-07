@@ -21,7 +21,7 @@ class TrumpParser extends React.Component {
     }
 
     removeKey(myarray) {
-        // remove http/s as well
+        // untrainable items include https, http, @, #
         let patternHttps = /https/i;
         let patternHttp = /http/i;
         let patternAt = /@/i;
@@ -29,24 +29,15 @@ class TrumpParser extends React.Component {
 
         let i = 0;
 
-        //let trumpTweets = JSON.parse(JSON.stringify(myarray));
-
         let trumpTweets = [];
         let mytweet = "";
-        myarray.slice(0, 10).map(item => {
+        myarray.slice(0, myarray.lenght).map(item => {
             mytweet = "";
+            // we want to know the author
+            //item.author = "trump";
             mytweet = JSON.stringify(item, (key, value) => {
-                /*
-                "id": 1234653427789070300,
-        "text": "I was thrilled to be back in the Great city of Charlotte, North Carolina with thousands of hardworking American Patriots who love our Country, cherish our values, respect our laws, and always put AMERICA FIRST! Thank you for a wonderful evening!! #KAG2020 https://t.co/dNJZfRsl9y",
-        "isRetweet": "f",
-        "isDeleted": "f",
-        "device": "Twitter for iPhone",
-        "favorites": 73748,
-        "retweets": 17404,
-        "date": "2020-03-03 01:34:50",
-        "isFlagged": "f"
-        */
+                // we do not want most of the twitter metadata
+                // but we still want our data as json
                 if (key === "id" ||
                     key === "isRetweet" ||
                     key === "isDeleted" ||
@@ -56,17 +47,21 @@ class TrumpParser extends React.Component {
                     key === "date" ||
                     key === "isFlagged") { 
                     return undefined;
+                } else if (patternHttps.test(item.text) === false && 
+                    patternHttp.test(item.text) === false && 
+                    patternAt.test(item.text) === false &&
+                    patternHash.test(item.text) === false) {
+                    return value;
                 }
-                console.log(value);
-                return value;
+                return undefined;
             });
 
-            i++;
-            console.log(mytweet);
-            trumpTweets.push(mytweet);
+            // anything coming back undefined we can ignore
+            if (mytweet !== undefined) {
+                i++
+                trumpTweets.push(mytweet);
+            }
         })
-
-        console.log(trumpTweets);
 
         this.setState({machineOut: trumpTweets, tweetCount: i});
     }
