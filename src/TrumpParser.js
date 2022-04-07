@@ -63,7 +63,8 @@ class TrumpParser extends React.Component {
             }
         })
 
-        this.setState({machineOut: trumpTweets, tweetCount: i});
+        // we want to end with a json array
+        this.setState({machineOut: "[" + trumpTweets + "]", tweetCount: i});
     }
     
     /*
