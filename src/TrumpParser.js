@@ -31,7 +31,7 @@ class TrumpParser extends React.Component {
 
         let trumpTweets = [];
         let mytweet = "";
-        myarray.slice(0, myarray.lenght).map(item => {
+        myarray.slice(0, myarray.length).map(item => {
             mytweet = "";
             // we want to know the author
             //item.author = "trump";
@@ -63,8 +63,10 @@ class TrumpParser extends React.Component {
             }
         })
 
-        // we want to end with a json array
-        this.setState({machineOut: "[" + trumpTweets + "]", tweetCount: i});
+        // we want to end with something hugging face will like
+        // like this hugging face will read the array properly
+        // without this we need to remove the commas in the output but that is a pain
+        this.setState({machineOut: "{\"data\":[" + trumpTweets + "]}", tweetCount: i});
     }
     
     /*
